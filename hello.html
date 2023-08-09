@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Human Verification</title>
+</head>
+<body>
+    <h1>Human Verification</h1>
+    <button id="loginButton">Log In</button>
+    <div id="message"></div>
+
+    <script>
+        const loginButton = document.getElementById('loginButton');
+        const messageElement = document.getElementById('message');
+
+        loginButton.addEventListener('click', async () => {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+
+                const videoElement = document.createElement('video');
+                videoElement.srcObject = stream;
+                videoElement.autoplay = true;
+                document.body.appendChild(videoElement);
+
+                // Display a message to inform the user
+                messageElement.textContent = "Scanning...";
+
+                // Wait for a moment to allow the camera feed to stabilize
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                // You can add more advanced processing here to detect human/robot features
+
+                messageElement.textContent = "Welcome!";
+            } catch (error) {
+                // Handle errors, e.g., if camera permission is denied
+                console.error("An error occurred:", error);
+                messageElement.textContent = "Camera access denied.";
+                // You might want to close the tab here using window.close()
+            }
+        });
+    </script>
+</body>
+</html>
